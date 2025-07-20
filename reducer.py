@@ -14,11 +14,11 @@ for line in sys.stdin:
     if current_category == category:
         count += 1
     else:
-        if current_category:
+        if current_category and count > 114:
             print("{}\t{}".format(current_category, count))
         current_category = category
         count = 1
 
-# Output the last one
-if current_category:
+# Output the last category if count > 114
+if current_category and count > 114:
     print("{}\t{}".format(current_category, count))
