@@ -2,6 +2,7 @@
 import sys
 
 current_category = None
+total = 0.0
 count = 0
 
 for line in sys.stdin:
@@ -9,16 +10,24 @@ for line in sys.stdin:
     if not line:
         continue
 
-    category, _ = line.split('\t', 1)
+    try:
+        category, amount = line.split('\t', 1)
+        amount = float(amount)
+    except ValueError:
+        continue
 
     if current_category == category:
+        total += amount
         count += 1
     else:
-        if current_category and count > 114:
-            print("{}\t{}".format(current_category, count))
+        if current_category:
+            avg = total / count
+            print("{}\t{:.2f}".format(current_category, avg))
         current_category = category
+        total = amount
         count = 1
 
-# Output the last category if count > 114
-if current_category and count > 114:
-    print("{}\t{}".format(current_category, count))
+# Output last category
+if current_category and count > 0:
+    avg = total / count
+    print("{}\t{:.2f}".format(current_category, avg))
